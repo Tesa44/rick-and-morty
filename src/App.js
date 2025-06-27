@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./index.css";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NavBar>
+        <Logo></Logo>
+        <Search></Search>
+        <NumResults></NumResults>
+      </NavBar>
     </div>
   );
 }
 
-export default App;
+function NavBar({ children }) {
+  return <nav className="nav-bar">{children}</nav>;
+}
+
+function Logo() {
+  return (
+    <div className="logo">
+      <span role="img">🥼</span>
+      <h1>Rick & Morty</h1>
+    </div>
+  );
+}
+
+function Search() {
+  return (
+    <input
+      className="search"
+      type="text"
+      placeholder="Search characters..."
+    ></input>
+  );
+}
+
+function NumResults() {
+  return (
+    <p className="num-results">
+      Found <strong>X</strong> results
+    </p>
+  );
+}

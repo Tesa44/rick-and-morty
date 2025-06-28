@@ -215,7 +215,7 @@ body {
 .character-details {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  /* grid-template-rows: repeat(4, 1fr); */
+  grid-template-rows: repeat(3, 1fr);
   column-gap: 1.2rem;
   align-items: center;
 }
@@ -231,11 +231,4 @@ body {
 .character-details span {
   font-size: 1.6rem;
   color: #adb5bd;
-}
-
-.details-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 3.2rem;
 }

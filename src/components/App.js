@@ -2,6 +2,9 @@ import NavBar from "./NavBar";
 import Logo from "./Logo";
 import Search from "./Search";
 import NumResults from "./NumResults";
+import Main from "./Main";
+import CharacterList from "./CharacterList";
+import Box from "./Box";
 
 const tempCharacters = [
   {
@@ -74,6 +77,13 @@ const tempCharacters = [
   },
 ];
 
+function getStatusEmoji(status) {
+  if (status === "Alive") return "🟢";
+
+  if (status === "Dead") return "🔴";
+  else return "⚫";
+}
+
 export default function App() {
   return (
     <div>
@@ -84,39 +94,39 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box>
+        <Box className={"grid--all-rows"}>
           <CharacterList characters={tempCharacters}></CharacterList>
         </Box>
-        <Box></Box>
+        <Box>
+          <CharacterDetails character={tempCharacters[0]}></CharacterDetails>
+        </Box>
       </Main>
     </div>
   );
 }
 
-function Main({ children }) {
-  return <main className="main">{children}</main>;
-}
-
-function Box({ children }) {
-  return <div className="box">{children}</div>;
-}
-
-function CharacterList({ characters }) {
+function CharacterDetails({ character }) {
   return (
-    <ul className="list list-characters">
-      {characters?.map((character) => (
-        <Character character={character}></Character>
-      ))}
-    </ul>
-  );
-}
-
-function Character({ character }) {
-  return (
-    <li>
+    <div className="character-details">
       <img src={character.image} alt={character.name}></img>
-      <h3>{character.name}</h3>
-      <p>From {character.origin.name}</p>
-    </li>
+      <div className="details-container">
+        <div>
+          <h2>{character.name}</h2>
+          <p>
+            {`${getStatusEmoji(character.status)} ${character.status} - ${
+              character.species
+            }`}
+          </p>
+        </div>
+        <div>
+          <span>Last known location:</span>
+          <p>{character.location.name}</p>
+        </div>
+        <div>
+          <span>First seen in:</span>
+          <p>{character.origin.name}</p>
+        </div>
+      </div>
+    </div>
   );
 }

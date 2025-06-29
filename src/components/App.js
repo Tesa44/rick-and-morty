@@ -6,6 +6,7 @@ import Main from "./Main";
 import CharacterList from "./CharacterList";
 import Box from "./Box";
 import CharacterDetails from "./CharacterDetails";
+import { useEffect, useState } from "react";
 
 const tempCharacters = [
   {
@@ -78,18 +79,88 @@ const tempCharacters = [
   },
 ];
 
+const PAGES = 42;
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 export default function App() {
+  const [characters, setCharacters] = useState([]);
+  const [query, setQuery] = useState("");
+
+  useEffect(
+    function () {
+      const randomPage = getRandomInt(PAGES - 1) + 1;
+      const controller = new AbortController();
+      async function fetchRandomCharacters() {
+        try {
+          const res = await fetch(
+            `https://rickandmortyapi.com/api/character/?page=${randomPage}`,
+            { signal: controller.signal }
+          );
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.errror);
+
+          const { results } = data;
+          setCharacters(results);
+        } catch (err) {
+          if (err.name !== "AbortError") console.error(err.message);
+        }
+      }
+      if (query.length === 0) fetchRandomCharacters();
+
+      return function () {
+        controller.abort();
+      };
+    },
+    [query]
+  );
+
+  useEffect(
+    function () {
+      const controller = new AbortController();
+      async function fetchSearchCharacters() {
+        try {
+          const res = await fetch(
+            `https://rickandmortyapi.com/api/character/?name=${query}`,
+            { signal: controller.signal }
+          );
+          const data = await res.json();
+
+          if (!res.ok) throw new Error(data.error);
+
+          const { results } = data;
+          setCharacters(results);
+        } catch (err) {
+          if (err.name !== "AbortError") console.error(err);
+        }
+      }
+      if (query.length < 3) {
+        setCharacters([]);
+        return;
+      }
+      fetchSearchCharacters();
+
+      return function () {
+        controller.abort();
+      };
+    },
+    [query]
+  );
+
   return (
     <div>
       <NavBar>
         <Logo></Logo>
-        <Search></Search>
+        <Search query={query} setQuery={setQuery}></Search>
         <NumResults></NumResults>
       </NavBar>
 
       <Main>
         <Box className={"grid--all-rows"}>
-          <CharacterList characters={tempCharacters}></CharacterList>
+          <CharacterList characters={characters}></CharacterList>
         </Box>
         <Box>
           <CharacterDetails character={tempCharacters[0]}></CharacterDetails>

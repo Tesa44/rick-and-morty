@@ -4,7 +4,7 @@ export default function CharacterList({ characters }) {
   return (
     <ul className="list list-characters">
       {characters?.map((character) => (
-        <Character character={character}></Character>
+        <Character character={character} key={character.id}></Character>
       ))}
     </ul>
   );

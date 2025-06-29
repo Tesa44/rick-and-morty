@@ -142,11 +142,8 @@ body {
 */
 
 .main {
-  /* display: flex; */
   display: grid;
   grid-template-columns: 2fr 3fr;
-  grid-template-rows: auto auto;
-  /* justify-content: center; */
 
   gap: 3.2rem;
   margin: 2.4rem auto;
@@ -161,8 +158,9 @@ body {
   border-radius: 11px;
 }
 
-.grid--all-rows {
-  grid-row: 1 / -1;
+.box-details {
+  height: 30rem;
+  overflow: hidden;
 }
 
 /*
@@ -231,4 +229,16 @@ body {
 .character-details span {
   font-size: 1.6rem;
   color: #adb5bd;
+}
+
+/*
+  LOADER
+*/
+
+.loader {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 4.8rem;
 }

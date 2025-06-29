@@ -7,6 +7,7 @@ import CharacterList from "./CharacterList";
 import Box from "./Box";
 import CharacterDetails from "./CharacterDetails";
 import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 const tempCharacters = [
   {
@@ -88,6 +89,7 @@ function getRandomInt(max) {
 export default function App() {
   const [characters, setCharacters] = useState([]);
   const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
     function () {
@@ -95,6 +97,8 @@ export default function App() {
       const controller = new AbortController();
       async function fetchRandomCharacters() {
         try {
+          setIsLoading(true);
+          console.log("Random Effect");
           const res = await fetch(
             `https://rickandmortyapi.com/api/character/?page=${randomPage}`,
             { signal: controller.signal }
@@ -107,6 +111,8 @@ export default function App() {
           setCharacters(results);
         } catch (err) {
           if (err.name !== "AbortError") console.error(err.message);
+        } finally {
+          setIsLoading(false);
         }
       }
       if (query.length === 0) fetchRandomCharacters();
@@ -123,6 +129,8 @@ export default function App() {
       const controller = new AbortController();
       async function fetchSearchCharacters() {
         try {
+          setIsLoading(true);
+          console.log("Search Effect");
           const res = await fetch(
             `https://rickandmortyapi.com/api/character/?name=${query}`,
             { signal: controller.signal }
@@ -135,6 +143,8 @@ export default function App() {
           setCharacters(results);
         } catch (err) {
           if (err.name !== "AbortError") console.error(err);
+        } finally {
+          setIsLoading(false);
         }
       }
       if (query.length < 3) {
@@ -159,10 +169,14 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box className={"grid--all-rows"}>
-          <CharacterList characters={characters}></CharacterList>
-        </Box>
         <Box>
+          {isLoading ? (
+            <Loader></Loader>
+          ) : (
+            <CharacterList characters={characters}></CharacterList>
+          )}
+        </Box>
+        <Box className={"box-details"}>
           <CharacterDetails character={tempCharacters[0]}></CharacterDetails>
         </Box>
       </Main>

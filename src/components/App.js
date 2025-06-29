@@ -89,9 +89,14 @@ function getRandomInt(max) {
 
 export default function App() {
   const [characters, setCharacters] = useState([]);
+  const [selectedCharacter, setSelectedCharacter] = useState("");
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  function handleSelectCharacter(character) {
+    setSelectedCharacter(character);
+  }
 
   useEffect(
     function () {
@@ -177,12 +182,19 @@ export default function App() {
         <Box>
           {isLoading && <Loader></Loader>}
           {!isLoading && !error && (
-            <CharacterList characters={characters}></CharacterList>
+            <CharacterList
+              characters={characters}
+              onSelectCharacter={handleSelectCharacter}
+            ></CharacterList>
           )}
           {error && <ErrorMessage message={error}></ErrorMessage>}
         </Box>
         <Box className={"box-details"}>
-          <CharacterDetails character={tempCharacters[0]}></CharacterDetails>
+          {selectedCharacter ? (
+            <CharacterDetails character={selectedCharacter}></CharacterDetails>
+          ) : (
+            <p className="select-character">Select character to view details</p>
+          )}
         </Box>
       </Main>
     </div>

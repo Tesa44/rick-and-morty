@@ -8,6 +8,7 @@ import Box from "./Box";
 import CharacterDetails from "./CharacterDetails";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
+import ErrorMessage from "./ErrorMessage";
 
 const tempCharacters = [
   {
@@ -90,6 +91,7 @@ export default function App() {
   const [characters, setCharacters] = useState([]);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(
     function () {
@@ -98,7 +100,7 @@ export default function App() {
       async function fetchRandomCharacters() {
         try {
           setIsLoading(true);
-          console.log("Random Effect");
+          setError("");
           const res = await fetch(
             `https://rickandmortyapi.com/api/character/?page=${randomPage}`,
             { signal: controller.signal }
@@ -109,8 +111,9 @@ export default function App() {
 
           const { results } = data;
           setCharacters(results);
+          setError("");
         } catch (err) {
-          if (err.name !== "AbortError") console.error(err.message);
+          if (err.name !== "AbortError") setError(err.message);
         } finally {
           setIsLoading(false);
         }
@@ -130,7 +133,7 @@ export default function App() {
       async function fetchSearchCharacters() {
         try {
           setIsLoading(true);
-          console.log("Search Effect");
+          setError("");
           const res = await fetch(
             `https://rickandmortyapi.com/api/character/?name=${query}`,
             { signal: controller.signal }
@@ -141,14 +144,16 @@ export default function App() {
 
           const { results } = data;
           setCharacters(results);
+          setError("");
         } catch (err) {
-          if (err.name !== "AbortError") console.error(err);
+          if (err.name !== "AbortError") setError(err.message);
         } finally {
           setIsLoading(false);
         }
       }
       if (query.length < 3) {
         setCharacters([]);
+        setError("");
         return;
       }
       fetchSearchCharacters();
@@ -170,11 +175,11 @@ export default function App() {
 
       <Main>
         <Box>
-          {isLoading ? (
-            <Loader></Loader>
-          ) : (
+          {isLoading && <Loader></Loader>}
+          {!isLoading && !error && (
             <CharacterList characters={characters}></CharacterList>
           )}
+          {error && <ErrorMessage message={error}></ErrorMessage>}
         </Box>
         <Box className={"box-details"}>
           <CharacterDetails character={tempCharacters[0]}></CharacterDetails>

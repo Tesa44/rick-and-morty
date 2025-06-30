@@ -1,7 +1,7 @@
 # Rick & Morty Characters
 
 **Rick and Morty Characters** is a responsive web application built with React that allows users
-to search and browse characters from the  *Rick and Morty" uniwerse using the public [Rick and Morty API](https://rickandmortyapi.com/)
+to search and browse characters from the  *Rick and Morty* uniwerse using the public [Rick and Morty API](https://rickandmortyapi.com/)
 The app provides detailed character cards with relevant information and images, all presented in a clean, user-friendly UI. It's a lightweight
 and fast project showcasing API integration, dynamic filtering and modern frontend development practices.
 

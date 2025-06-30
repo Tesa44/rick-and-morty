@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 function getStatusEmoji(status) {
   if (status === "Alive") return "🟢";
 
@@ -6,6 +8,15 @@ function getStatusEmoji(status) {
 }
 
 export default function CharacterDetails({ character }) {
+  useEffect(
+    function () {
+      if (!character) return;
+
+      document.title = `Rick & Morty | ${character.name}`;
+    },
+    [character]
+  );
+
   return (
     <div className="character-details">
       <img src={character.image} alt={character.name}></img>

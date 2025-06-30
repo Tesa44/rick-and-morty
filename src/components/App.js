@@ -96,6 +96,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [curPage, setCurPage] = useState(1);
   const [pages, setPages] = useState(1);
+  const [numResults, setNumResults] = useState("");
 
   function handleSelectCharacter(character) {
     setSelectedCharacter(character);
@@ -118,6 +119,7 @@ export default function App() {
           if (!res.ok) throw new Error(data.error);
 
           setPages(data.info.pages);
+          setNumResults(data.info.count);
           const { results } = data;
           setCharacters(results);
           setError("");
@@ -152,7 +154,7 @@ export default function App() {
           if (!res.ok) throw new Error(data.error);
 
           setPages(data.info.pages);
-          console.log(data);
+          setNumResults(data.info.count);
           const { results } = data;
           setCharacters(results);
           setError("");
@@ -188,7 +190,7 @@ export default function App() {
       <NavBar>
         <Logo></Logo>
         <Search query={query} setQuery={setQuery}></Search>
-        <NumResults></NumResults>
+        <NumResults num={numResults}></NumResults>
       </NavBar>
 
       <Main>

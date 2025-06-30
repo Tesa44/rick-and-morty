@@ -90,7 +90,8 @@ body {
 .nav-bar {
   background-color: #35c9dd;
   border-radius: 11px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
   align-items: center;
   padding: 0 3.2rem;
@@ -136,6 +137,8 @@ body {
 .num-results {
   padding: 1.2rem;
   border-radius: 11px;
+  justify-self: end;
+  font-size: 1.8rem;
 }
 
 /*
@@ -144,7 +147,7 @@ body {
 
 .main {
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 3fr 4fr;
 
   gap: 3.2rem;
   margin: 2.4rem auto;
@@ -175,7 +178,6 @@ body {
 */
 .list {
   list-style: none;
-  /* padding: 1.2rem 0; */
   overflow: auto;
 }
 
@@ -218,6 +220,7 @@ body {
   CHARACTER DETAILS
 */
 .character-details {
+  height: 30rem;
   display: grid;
   grid-template-columns: 1fr 4fr;
   grid-template-rows: repeat(3, 1fr);

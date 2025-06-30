@@ -87,6 +87,7 @@ body {
 /*
   NAVIGATION BAR
 */
+
 .nav-bar {
   background-color: #35c9dd;
   border-radius: 11px;
@@ -176,6 +177,7 @@ body {
 /*
    LIST
 */
+
 .list {
   list-style: none;
   overflow: auto;

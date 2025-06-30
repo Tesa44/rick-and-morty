@@ -52,6 +52,7 @@ Large: 1.8
 
 --- 06 BORDER-RADIUS
 
+Small: 5px
 Default: 9px
 Medium: 11px
 
@@ -158,6 +159,12 @@ body {
   border-radius: 11px;
 }
 
+.box-character-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
 .box-details {
   height: 30rem;
   overflow: hidden;
@@ -168,7 +175,7 @@ body {
 */
 .list {
   list-style: none;
-  padding: 1.2rem 0;
+  /* padding: 1.2rem 0; */
   overflow: auto;
 }
 
@@ -255,4 +262,44 @@ body {
   font-weight: 600;
   font-size: 2rem;
   margin: 4.8rem;
+}
+
+/*
+  PAGINATION
+*/
+
+.pagination {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.pagination span {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination span:hover {
+  transform: translateY(-10%);
+}
+
+#cur-page {
+  color: #888;
+  cursor: default;
+  transform: none;
+}
+
+.pagination button {
+  border: none;
+  background-color: #2b3035;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+}
+
+.pagination button:hover {
+  background-color: #343a40;
+  cursor: pointer;
 }

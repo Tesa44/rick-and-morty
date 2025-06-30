@@ -9,6 +9,7 @@ import CharacterDetails from "./CharacterDetails";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
+import PaginationBar from "./PaginationBar";
 
 const tempCharacters = [
   {
@@ -93,6 +94,8 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [curPage, setCurPage] = useState(1);
+  const [pages, setPages] = useState(1);
 
   function handleSelectCharacter(character) {
     setSelectedCharacter(character);
@@ -102,18 +105,19 @@ export default function App() {
     function () {
       const randomPage = getRandomInt(PAGES - 1) + 1;
       const controller = new AbortController();
-      async function fetchRandomCharacters() {
+      async function fetchCharacters() {
         try {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `https://rickandmortyapi.com/api/character/?page=${randomPage}`,
+            `https://rickandmortyapi.com/api/character/?page=${curPage}`,
             { signal: controller.signal }
           );
 
           const data = await res.json();
-          if (!res.ok) throw new Error(data.errror);
+          if (!res.ok) throw new Error(data.error);
 
+          setPages(data.info.pages);
           const { results } = data;
           setCharacters(results);
           setError("");
@@ -123,13 +127,13 @@ export default function App() {
           setIsLoading(false);
         }
       }
-      if (query.length === 0) fetchRandomCharacters();
+      if (query.length === 0) fetchCharacters();
 
       return function () {
         controller.abort();
       };
     },
-    [query]
+    [query, curPage]
   );
 
   useEffect(
@@ -140,12 +144,14 @@ export default function App() {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `https://rickandmortyapi.com/api/character/?name=${query}`,
+            `https://rickandmortyapi.com/api/character/?name=${query}&page=${curPage}`,
             { signal: controller.signal }
           );
           const data = await res.json();
 
           if (!res.ok) throw new Error(data.error);
+
+          setPages(data.info.pages);
 
           const { results } = data;
           setCharacters(results);
@@ -167,7 +173,7 @@ export default function App() {
         controller.abort();
       };
     },
-    [query]
+    [query, curPage]
   );
 
   return (
@@ -179,13 +185,20 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box>
+        <Box className={"box-character-list"}>
           {isLoading && <Loader></Loader>}
           {!isLoading && !error && (
-            <CharacterList
-              characters={characters}
-              onSelectCharacter={handleSelectCharacter}
-            ></CharacterList>
+            <>
+              <CharacterList
+                characters={characters}
+                onSelectCharacter={handleSelectCharacter}
+              ></CharacterList>
+              <PaginationBar
+                pages={pages}
+                page={curPage}
+                onSetPage={setCurPage}
+              ></PaginationBar>
+            </>
           )}
           {error && <ErrorMessage message={error}></ErrorMessage>}
         </Box>

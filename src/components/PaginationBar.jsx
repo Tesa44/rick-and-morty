@@ -1,29 +1,23 @@
-import { useEffect, useState } from "react";
-
-export default function PaginationBar({ pages, page, onSetPage }) {
-  const [curPage, setCurPage] = useState(page);
+export default function PaginationBar({ pages, curPage, onSetPage }) {
   const toBegin = curPage - 1;
   const toEnd = pages - curPage;
 
   function handleSelectPage(e) {
     e.preventDefault();
-    if (e.target.matches("span")) setCurPage(Number(e.target.textContent));
+    if (e.target.matches("span")) {
+      onSetPage(Number(e.target.textContent));
+    }
+    if (e.target.id === "btn-prev" && curPage > 1) {
+      onSetPage(curPage - 1);
+    }
+    if (e.target.id === "btn-next" && curPage < pages) {
+      onSetPage(curPage + 1);
+    }
   }
-
-  useEffect(
-    function () {
-      onSetPage(curPage);
-    },
-    [curPage]
-  );
 
   return (
     <div className="pagination" onClick={(e) => handleSelectPage(e)}>
-      <button
-        onClick={() =>
-          setCurPage((curPage) => (curPage > 1 ? curPage - 1 : curPage))
-        }
-      >
+      <button id="btn-prev" onClick={(e) => handleSelectPage(e)}>
         &larr;
       </button>
 
@@ -47,11 +41,7 @@ export default function PaginationBar({ pages, page, onSetPage }) {
       ) : (
         [...Array(toEnd)].map((_, i) => <span>{curPage + 1 + i}</span>)
       )}
-      <button
-        onClick={() =>
-          setCurPage((curPage) => (curPage < pages ? curPage + 1 : curPage))
-        }
-      >
+      <button id="btn-next" onClick={(e) => handleSelectPage(e)}>
         &rarr;
       </button>
     </div>

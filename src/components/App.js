@@ -152,7 +152,7 @@ export default function App() {
           if (!res.ok) throw new Error(data.error);
 
           setPages(data.info.pages);
-
+          console.log(data);
           const { results } = data;
           setCharacters(results);
           setError("");
@@ -176,6 +176,13 @@ export default function App() {
     [query, curPage]
   );
 
+  useEffect(
+    function () {
+      setCurPage(1);
+    },
+    [query]
+  );
+
   return (
     <div>
       <NavBar>
@@ -195,7 +202,7 @@ export default function App() {
               ></CharacterList>
               <PaginationBar
                 pages={pages}
-                page={curPage}
+                curPage={curPage}
                 onSetPage={setCurPage}
               ></PaginationBar>
             </>
